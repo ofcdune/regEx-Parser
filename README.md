@@ -10,3 +10,8 @@ As of now, the functions
 - ```matcher *matcher_get_match(matcher *restrict match_object, char *restrict string)```
 
 are the center of the programs functionality.
+
+The program works by 
+1. parsing the pattern into a RegEx tree via a pratt parser (recursive descent parser)
+2. creating a DFA using the regular expression derivation function
+3. the input text is now being matched with the DFA, the results get stored in the matcher object
