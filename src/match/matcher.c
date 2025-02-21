@@ -55,7 +55,6 @@ matcher *matcher_match_all(pattern *restrict pattern, const char *restrict strin
 
         cur_state = cur_state->alphabet[string[i] - 32];
         if (cur_state->is_final) {
-
             matched = true;
             buffer[1] = i;
             continue;
