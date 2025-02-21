@@ -7,17 +7,21 @@ This program incooperates a range of computer science principles such as parsing
 
 As of now, the functions 
 - ```pattern *matcher_get_pattern(char *string, char pattern_string_len)```
-- ```matcher *matcher_get_match(matcher *restrict match_object, char *restrict string)```
+- ```matcher *matcher_match_all(pattern *restrict pattern, const char *restrict string, int str_len);```
+- - ```char *matcher_get_match(matcher *restrict match_object, char *restrict string)```
 
-are the center of the programs functionality.
+are the center of the programs functionality. The first function turns a string into a regex pattern (DFA). The second function
+finds all matches of a given string and the third function returns the found portion of the string. 
 
 The program works by 
 1. parsing the pattern into a RegEx tree via a pratt parser (recursive descent parser)
 2. creating a DFA using the regular expression derivation function
-3. the input text is now being matched with the DFA, the results get stored in the matcher object
+3. matching the input text with the DFA, the results get stored in the matcher object(s)
+4. extracting the string portion that has been found
 
 The matcher object is defined as follows:
-```
+
+```C
 typedef struct matcher {
     unsigned int from;
     unsigned int to;
@@ -25,3 +29,5 @@ typedef struct matcher {
     struct matcher *next;
 } matcher;
 ```
+
+
