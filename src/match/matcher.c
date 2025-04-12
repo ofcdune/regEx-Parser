@@ -15,6 +15,13 @@ matcher *matcher_add_match(matcher *restrict matcher_root, const unsigned int *r
     return matcher_root->next;
 }
 
+/* This function prints the string portions for all found matches.
+ *
+ * Input:
+ * - matcher *restrict matcher_root: The root of the matcher structure;
+ * - const char *restrict string: The string that has been searched;
+ * - bool show_indices: true if the function should show the indices of the matched portion of the string;
+ */
 void matcher_print_matches(matcher *restrict matcher_root, const char *restrict string, bool show_indices) {
     unsigned int i;
     while (matcher_root->next != NULL) {
@@ -55,7 +62,6 @@ matcher *matcher_match_all(pattern *restrict pattern, const char *restrict strin
 
         cur_state = cur_state->alphabet[string[i] - 32];
         if (cur_state->is_final) {
-
             matched = true;
             buffer[1] = i;
             continue;
@@ -89,7 +95,7 @@ matcher *matcher_match_all(pattern *restrict pattern, const char *restrict strin
  * Output:
  * - bool is_final: true if the last state the DFA landed on is a final state (match);
  */
-bool matcher_match_full(pattern *restrict pattern, const char *restrict string, int str_len) {
+bool matcher_match_once(pattern *restrict pattern, const char *restrict string, int str_len) {
 
     dfa_state *cur_state = pattern->start;
     int i;
@@ -101,6 +107,14 @@ bool matcher_match_full(pattern *restrict pattern, const char *restrict string, 
     return cur_state->is_final;
 }
 
+/* This function takes the pattern string and turns it into a DFA.
+ *
+ * Input:
+ * - char *pattern_string: The pattern string;
+ * - char pattern_string_len: The pattern string length;
+ * Output:
+ * - pattern *pattern: The DFA derived from the regular expression;
+ */
 pattern *matcher_get_pattern(char *pattern_string, char pattern_string_len) {
     seek *tokenstream = lexer_tokenize(pattern_string, pattern_string_len);
     regex_node *tree = parser_parse(tokenstream, PR_LOWEST);
