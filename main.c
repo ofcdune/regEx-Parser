@@ -10,7 +10,7 @@
 
 /* TODO: Extensive testing */
 
-int main_() {
+int main() {
     char *test_suite[SIZE] = {
             "(a|b|c|d|e|f)",
             "(7*e*|d*)l",
@@ -86,15 +86,28 @@ int main_() {
     return 0;
 }
 
-int main() {
+int main_() {
 
     char *input = "The Mercedes CLR GTR is a remarkable racing car celebrated for its outstanding performance and sleek design. Powered by a potent 16-liter V12 engine, it delivers over 600 horsepower.";
-    char *pattern_string = "\\d";
+
+    NEW(char, pattern_string, 256)
+    NEW(char, input_ptrn, 256)
+
+    puts("Please enter a pattern:");
+    printf(">>> ");
+    fgets(input_ptrn, 256, stdin);
+
+    putchar('\n');
+
+    strncpy(pattern_string, input_ptrn, strnlen(input_ptrn, 256)-1);
+    free(input_ptrn);
 
     pattern *pattern = matcher_get_pattern(pattern_string, (char) strnlen(pattern_string, 256));
     matcher *all = matcher_match_all(pattern, input, (int) strnlen(input, 256));
 
     matcher_print_matches(all, input, false);
+
+    
 
     return 0;
 }
